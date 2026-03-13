@@ -1,16 +1,31 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { Movie } from './types'
 import MovieForm from './components/MovieForm'
 import MovieList from './components/MovieList'
 
+const API_URL = 'http://localhost:3000/api/movies'
+
 export default function App() {
   const [movies, setMovies] = useState<Movie[]>([])
 
-  function handleAdd(movie: Movie) {
-    setMovies([...movies, movie])
+  useEffect(() => {
+    fetch(API_URL)
+      .then(res => res.json())
+      .then(data => setMovies(data))
+  }, [])
+
+  async function handleAdd(movie: Movie) {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(movie)
+    })
+    const newMovie = await res.json()
+    setMovies([newMovie, ...movies])
   }
 
-  function handleDelete(id: number) {
+  async function handleDelete(id: number) {
+    await fetch(`${API_URL}/${id}`, { method: 'DELETE' })
     setMovies(movies.filter(movie => movie.id !== id))
   }
 
