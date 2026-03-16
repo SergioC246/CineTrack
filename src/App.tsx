@@ -3,7 +3,7 @@ import type { Movie } from './types'
 import MovieForm from './components/MovieForm'
 import MovieList from './components/MovieList'
 
-const API_URL = 'http://localhost:3000/api/movies'
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/movies'
 
 export default function App() {
   const [movies, setMovies] = useState<Movie[]>([])
