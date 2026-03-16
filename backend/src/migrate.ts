@@ -2,17 +2,20 @@ import pool from './db'
 
 async function migrate() {
   await pool.query(`
-    CREATE TABLE IF NOT EXISTS movies (
+    CREATE TABLE IF NOT EXISTS users (
       id SERIAL PRIMARY KEY,
-      titulo VARCHAR(255) NOT NULL,
-      año INTEGER NOT NULL,
-      puntuacion INTEGER NOT NULL,
-      reseña TEXT,
-      estado VARCHAR(20) NOT NULL DEFAULT 'pendiente',
+      email VARCHAR(255) UNIQUE NOT NULL,
+      password VARCHAR(255) NOT NULL,
       created_at TIMESTAMP DEFAULT NOW()
     )
   `)
-  console.log('✅ Tabla movies creada correctamente')
+
+  await pool.query(`
+    ALTER TABLE movies
+    ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)
+  `)
+
+  console.log('✅ Tablas actualizadas correctamente')
   process.exit(0)
 }
 

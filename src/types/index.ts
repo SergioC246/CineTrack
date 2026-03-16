@@ -9,3 +9,13 @@ export interface Movie {
 }
 
 export type EstadoMovie = "vista" | "pendiente" | "descartada"
+
+export interface User {
+  id: number
+  email: string
+}
+
+export interface AuthResponse {
+  token: string
+  user: User
+}
