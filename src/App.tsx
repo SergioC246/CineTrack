@@ -3,6 +3,7 @@ import type { Movie } from './types'
 import MovieForm from './components/MovieForm'
 import MovieList from './components/MovieList'
 import AuthForm from './components/AuthForm'
+import Stats from './components/Stats'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/movies'
 
@@ -60,6 +61,7 @@ export default function App() {
             Cerrar sesión
           </button>
         </div>
+        <Stats movies={movies} />
         <MovieForm onAdd={handleAdd} />
         <MovieList movies={movies} onDelete={handleDelete} />
       </div>
