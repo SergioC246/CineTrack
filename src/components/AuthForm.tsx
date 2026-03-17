@@ -13,22 +13,26 @@ export default function AuthForm({ onLogin }: AuthFormProps) {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
-  async function handleSubmit() {
-    setError('')
-    const endpoint = isLogin ? '/auth/login' : '/auth/register'
-    const res = await fetch(`${API_URL}${endpoint}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    })
-    const data: AuthResponse = await res.json()
-    if (!res.ok) {
-      setError((data as any).error || 'Algo salió mal')
-      return
-    }
-    localStorage.setItem('token', data.token)
-    onLogin(data.token)
+ interface ErrorResponse {
+  error: string
+}
+
+async function handleSubmit() {
+  setError('')
+  const endpoint = isLogin ? '/auth/login' : '/auth/register'
+  const res = await fetch(`${API_URL}${endpoint}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  })
+  const data = await res.json() as AuthResponse | ErrorResponse
+  if (!res.ok) {
+    setError((data as ErrorResponse).error || 'Algo salió mal')
+    return
   }
+  localStorage.setItem('token', (data as AuthResponse).token)
+  onLogin((data as AuthResponse).token)
+}
 
   return (
     <div className="min-h-screen bg-gray-950 flex items-center justify-center px-4">

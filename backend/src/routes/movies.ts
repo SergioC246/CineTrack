@@ -19,10 +19,10 @@ router.get('/', async (req: AuthRequest, res: Response) => {
 
 // POST /api/movies
 router.post('/', async (req: AuthRequest, res: Response) => {
-  const { titulo, año, puntuacion, reseña, estado } = req.body
+  const { titulo, año, puntuacion, reseña, estado, portada } = req.body 
   const result = await pool.query(
-    'INSERT INTO movies (titulo, año, puntuacion, reseña, estado, user_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-    [titulo, año, puntuacion, reseña, estado, req.userId]
+    'INSERT INTO movies (titulo, año, puntuacion, reseña, estado, portada, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+    [titulo, año, puntuacion, reseña, estado, portada, req.userId]
   )
   res.json(result.rows[0])
 })
