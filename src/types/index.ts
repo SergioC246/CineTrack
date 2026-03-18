@@ -6,6 +6,7 @@ export interface Movie {
   reseña: string
   estado: EstadoMovie
   portada?: string
+  descripcion?: string
 }
 
 export type EstadoMovie = "vista" | "pendiente" | "descartada"

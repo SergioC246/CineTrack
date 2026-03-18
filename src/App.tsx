@@ -41,6 +41,19 @@ export default function App() {
     setMovies(movies.filter(movie => movie.id !== id))
   }
 
+  async function handleEdit(movie: Movie) {
+  const res = await fetch(`${API_URL}/${movie.id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify(movie)
+  })
+  const updatedMovie = await res.json()
+  setMovies(movies.map(m => m.id === updatedMovie.id ? updatedMovie : m))
+}
+
   function handleLogout() {
     localStorage.removeItem('token')
     setToken(null)
@@ -63,7 +76,7 @@ export default function App() {
         </div>
         <Stats movies={movies} />
         <MovieForm onAdd={handleAdd} />
-        <MovieList movies={movies} onDelete={handleDelete} />
+        <MovieList movies={movies} onDelete={handleDelete} onEdit={handleEdit} />
       </div>
     </div>
   )

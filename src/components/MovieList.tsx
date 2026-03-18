@@ -4,9 +4,10 @@ import MovieCard from './MovieCard'
 interface MovieListProps {
   movies: Movie[]
   onDelete: (id: number) => void
+  onEdit: (movie: Movie) => void
 }
 
-export default function MovieList({ movies, onDelete }: MovieListProps) {
+export default function MovieList({ movies, onDelete, onEdit }: MovieListProps) {
   if (movies.length === 0) {
     return (
       <div className="text-center text-gray-500 py-16">
@@ -20,7 +21,7 @@ export default function MovieList({ movies, onDelete }: MovieListProps) {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
       {movies.map(movie => (
-        <MovieCard key={movie.id} movie={movie} onDelete={onDelete} />
+        <MovieCard key={movie.id} movie={movie} onDelete={onDelete} onEdit={onEdit} />
       ))}
     </div>
   )

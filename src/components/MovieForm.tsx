@@ -19,6 +19,7 @@ export default function MovieForm({ onAdd }: MovieFormProps) {
   const [año, setAño] = useState(2024)
   const [puntuacion, setPuntuacion] = useState(5)
   const [reseña, setReseña] = useState('')
+  const [descripcion, setDescripcion] = useState('')
   const [estado, setEstado] = useState<EstadoMovie>('pendiente')
   const [portada, setPortada] = useState<string | undefined>(undefined)
   const [modo, setModo] = useState<'buscar' | 'manual'>('buscar')
@@ -26,7 +27,8 @@ export default function MovieForm({ onAdd }: MovieFormProps) {
   function handleSelect(movie: TMDBMovie) {
     setTitulo(movie.title)
     setAño(Number(movie.release_date?.split('-')[0]) || 2024)
-    setReseña(movie.overview || '')
+    setReseña('')
+    setDescripcion(movie.overview || '')
     setPortada(movie.poster_path
       ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
       : undefined
@@ -35,18 +37,20 @@ export default function MovieForm({ onAdd }: MovieFormProps) {
   }
 
   function handleSubmit() {
-  const nuevaPelicula: Movie = {
-    id: 0,
-    titulo,
-    año,
-    puntuacion,
-    reseña,
-    estado,
-    portada: portada ?? undefined
-  }
+    const nuevaPelicula: Movie = {
+      id: 0,
+      titulo,
+      año,
+      puntuacion,
+      reseña,
+      descripcion,
+      estado,
+      portada: portada ?? undefined
+    }
     onAdd(nuevaPelicula)
     setTitulo('')
     setReseña('')
+    setDescripcion('')
     setPortada(undefined)
     setModo('buscar')
   }
@@ -105,11 +109,22 @@ export default function MovieForm({ onAdd }: MovieFormProps) {
           </div>
 
           <div className="flex flex-col gap-1">
+            <label className="text-sm text-gray-400">Descripción</label>
+            <textarea
+              value={descripcion}
+              onChange={e => setDescripcion(e.target.value)}
+              placeholder="Descripción de la película..."
+              rows={3}
+              className="bg-gray-800 text-white rounded-lg px-4 py-2 outline-none placeholder-gray-500 resize-none"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1">
             <label className="text-sm text-gray-400">Tu reseña</label>
             <textarea
               value={reseña}
               onChange={e => setReseña(e.target.value)}
-              placeholder="¿Qué te pareció?"
+              placeholder="¿Qué te pareció? ¿La recomendarías?"
               rows={3}
               className="bg-gray-800 text-white rounded-lg px-4 py-2 outline-none placeholder-gray-500 resize-none"
             />

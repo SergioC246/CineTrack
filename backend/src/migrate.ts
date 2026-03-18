@@ -20,6 +20,11 @@ async function migrate() {
     ADD COLUMN IF NOT EXISTS portada TEXT
   `)
 
+  await pool.query(`
+  ALTER TABLE movies
+  ADD COLUMN IF NOT EXISTS descripcion TEXT
+  `)
+
   console.log('✅ Tablas actualizadas correctamente')
   process.exit(0)
 }
