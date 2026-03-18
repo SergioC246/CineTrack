@@ -25,8 +25,14 @@ async function migrate() {
   ADD COLUMN IF NOT EXISTS descripcion TEXT
   `)
 
+  await pool.query(`
+  ALTER TABLE users
+  ADD COLUMN IF NOT EXISTS auth0_sub VARCHAR(255) UNIQUE
+  `)
+
   console.log('✅ Tablas actualizadas correctamente')
   process.exit(0)
 }
+
 
 migrate()
